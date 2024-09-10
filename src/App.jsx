@@ -1,6 +1,6 @@
 
 import React from 'react'
-import './App.css'
+
 import Anasayfa from './pages/anasayfa'
 import Siparisformu from './pages/siparisformu'
 import Siparissucsess from './pages/siparissucsess'
