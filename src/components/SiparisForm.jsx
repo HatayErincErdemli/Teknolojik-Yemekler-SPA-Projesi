@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { ekMalzemeler } from "../data";
 import Malzeme from "./Malzeme";
+import axios from "axios";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -49,14 +51,21 @@ function SiparisForm() {
     boyut: "",
     hamur: "",
     kisininAdı: "",
+    malzemeler: "",
   });
   const [isValid, setIsValid] = useState(false);
+  const history = useHistory();
+
   function handleSubmit(event) {
     event.preventDefault();
+    axios.post("https://reqres.in/api/pizza", formData).then((response) => {
+      console.log(response.data);
+      history.push("/siparissucsesssayfası");
+    });
   }
 
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <h2>aaaaaaa</h2>
       <p>Boyut Seç *</p>
       <Label>
@@ -107,7 +116,7 @@ function SiparisForm() {
         <h3>Sipariş Toplamı</h3>
         <p>Ek Malzemeler</p>
         <p>Toplam</p>
-        <Button>Sipariş Ver</Button>
+        <Button disabled={!isValid}>Sipariş Ver</Button>
       </SiparisButtonContainer>
     </Form>
   );
