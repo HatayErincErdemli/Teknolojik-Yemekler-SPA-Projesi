@@ -1,6 +1,7 @@
 body{
     margin: 0;
     background: #FAF7F2;
+    font-family:"Roboto Condensed", sans-serif;
 }
 
 .errorMessage{
@@ -63,4 +64,13 @@ margin-top: 5%;
     text-align: center;
     padding-top: 15%;
     
+}
+.formParagraf{
+    font-size: 1.2rem;
+    line-height: 2rem;
+
+}
+.fiyat-container{
+    font-size: 1.8rem;
+    font-weight: bold;
 }

@@ -47,7 +47,7 @@ const initalFormData = {
 };
 
 function SiparisForm() {
-  const pizzaFiyat = 89.5;
+  const pizzaFiyat = 85.5;
   const [fiyat, setFiyat] = useState(pizzaFiyat);
   const [formData, setFormData] = useState(initalFormData);
   const [error, setError] = useState({
@@ -123,6 +123,14 @@ function SiparisForm() {
     <Form onSubmit={handleSubmit}>
       <h2>Position Absolute Acı Pizza</h2>
       <div className="fiyat-container">{fiyat} TL</div>
+      <p className="formParagraf">
+        Frontend Dev olarak hala position:absolute kullanıyorsan bu çok acı
+        pizza tam sana göre. Pizza, domates, peynir ve genellikle çeşitli diğer
+        malzemelerle kaplanmış, daha sonra geleneksel olarak odun ateşinde bir
+        fırında yüksek sıcaklıkta pişirilen, genellikle yuvarlak, düzleştirilmiş
+        mayalı buğday bazlı hamurdan oluşan İtalyan kökenli lezzetli bir
+        yemektir. Küçük bir pizzaya bazen pizzetta denir.
+      </p>
       <h3>Boyut Seç *</h3>
 
       {boyut.map((item, index) => (
@@ -150,7 +158,7 @@ function SiparisForm() {
         </select>
         {error.hamur && <p className="errorMessage">{error.hamur}</p>}
       </div>
-      <h3>Ek Malzemeler</h3>
+      <h3>Ek Malzemeler *</h3>
       <EkMalzemeContainer>
         {ekMalzemeler.map((item, index) => (
           <Malzeme
@@ -167,7 +175,7 @@ function SiparisForm() {
 
       <div>
         <label>
-          <h3>Sipariş Veren Kişinin Adı</h3>
+          <h3>Sipariş Veren Kişinin Adı *</h3>
           <input
             type="text"
             name="kisininAdı"
