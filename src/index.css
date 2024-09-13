@@ -2,3 +2,65 @@ body{
     margin: 0;
     background: #FAF7F2;
 }
+
+.errorMessage{
+    color: red;
+}
+.anasayfa{
+    background-position: center;
+    background-image: url("../Assets/Iteration-1-assets/home-banner.png");
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    height: 100vh;
+    color: #FAF7F2;
+    
+    
+}
+.anasayfalogo{
+    
+    width: 20%;
+    margin-top: 5rem;
+    
+}
+.anasayfaBaslık{
+    font-family:"Roboto Condensed", sans-serif;
+    font-weight:normal;
+   font-size: 50px;
+   width: 30%;
+   text-align: center ;
+   
+}
+.anasayfaButton{
+    font-size: large;
+    border: 0px solid  #FDC913;
+    border-radius: 25px;
+    padding: 15px 40px;
+    background:  #FDC913;
+}
+.siparisSuccess{
+    background: #CE2829;
+    height:100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    color: #FAF7F2;
+    
+}
+.siparisSuccessSayfasılogo{
+    
+    
+width: 20%;
+margin-top: 5%;
+}
+
+.successBaslık{
+    font-family:"Roboto Condensed", sans-serif;
+    font-weight:normal;
+    font-size: 50px;
+    text-align: center;
+    padding-top: 15%;
+    
+}

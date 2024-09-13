@@ -5,10 +5,17 @@ const Label = styled.label`
   width: 30%;
 `;
 function Malzeme(props) {
-  const { malzeme } = props;
+  const { malzeme, fiyat, setFiyat, isSelected, handleChange } = props;
   return (
     <Label>
-      <input type="checkbox" name="malzeme" value={malzeme} /> {malzeme}
+      <input
+        type="checkbox"
+        name="malzemeler"
+        value={malzeme}
+        checked={isSelected}
+        onChange={handleChange}
+      />
+      {malzeme}
     </Label>
   );
 }

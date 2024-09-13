@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { ekMalzemeler } from "../data";
+import { boyut, ekMalzemeler, hamurKalınlıgı } from "../data";
 import Malzeme from "./Malzeme";
 import axios from "axios";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import "../index.css";
+
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-content: center;
   padding: 1rem;
-  border: 1px solid black;
-  width: 45%;
+  width: 35%;
 `;
 const Button = styled.button`
   width: 100%;
@@ -38,7 +39,7 @@ const EkMalzemeContainer = styled.div`
 const Label = styled.label``;
 
 const initalFormData = {
-  boyut: "",
+  boyut: [],
   hamur: "",
   malzemeler: [],
   kisininAdı: "",
@@ -46,6 +47,8 @@ const initalFormData = {
 };
 
 function SiparisForm() {
+  const pizzaFiyat = 89.5;
+  const [fiyat, setFiyat] = useState(pizzaFiyat);
   const [formData, setFormData] = useState(initalFormData);
   const [error, setError] = useState({
     boyut: "",
@@ -56,66 +59,142 @@ function SiparisForm() {
   const [isValid, setIsValid] = useState(false);
   const history = useHistory();
 
+  useEffect(() => {
+    if (
+      formData.kisininAdı !== "" &&
+      formData.boyut !== "" &&
+      formData.malzemeler.length >= 3 &&
+      formData.malzemeler.length <= 10
+    ) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+  }, [formData]);
+
   function handleSubmit(event) {
     event.preventDefault();
-    axios.post("https://reqres.in/api/pizza", formData).then((response) => {
-      console.log(response.data);
-      history.push("/siparissucsesssayfası");
-    });
+    axios
+      .post("https://reqres.in/api/pizza", formData)
+      .then((response) => {
+        console.log(response.data);
+        history.push("/siparissucsesssayfası");
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }
+  function handleChange(event) {
+    const { value, name } = event.target;
+
+    if (name === "kisininAdı") {
+      if (value == "") {
+        setError({
+          ...error,
+          [name]: "Lütfen teslim alacak kişinin adını yazınız",
+        });
+      } else {
+        setError({ ...error, [name]: "" });
+      }
+    }
+
+    if (name === "malzemeler") {
+      let newMalzemeler;
+      if (formData.malzemeler.includes(value)) {
+        newMalzemeler = formData.malzemeler.filter((item) => item !== value);
+      } else {
+        newMalzemeler = [...formData.malzemeler, value];
+      }
+      if (newMalzemeler.length >= 3 && newMalzemeler.length <= 10) {
+        setError({ ...error, [name]: "" });
+      } else {
+        setError({
+          ...error,
+          [name]: "Lütfen en az 3 ve en fazla 10 ek malzeme seçiniz",
+        });
+      }
+      setFormData({ ...formData, [name]: newMalzemeler });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   }
 
   return (
     <Form onSubmit={handleSubmit}>
-      <h2>aaaaaaa</h2>
-      <p>Boyut Seç *</p>
-      <Label>
-        <input type="radio" name="boyut" />
-        Küçük
-      </Label>
-      <Label>
-        <input type="radio" name="boyut" />
-        Orta
-      </Label>
-      <Label>
-        <input type="radio" name="boyut" />
-        Büyük
-      </Label>
+      <h2>Position Absolute Acı Pizza</h2>
+      <div className="fiyat-container">{fiyat} TL</div>
+      <h3>Boyut Seç *</h3>
 
-      <Label>
-        <p>Hamur Seç *</p>
+      {boyut.map((item, index) => (
+        <Label>
+          <input
+            type="radio"
+            name="boyut"
+            value={item}
+            key={index}
+            onChange={handleChange}
+          />
+          {item}
+        </Label>
+      ))}
+      {error.boyut && <p className="errorMessage">{error.boyut}</p>}
+
+      <div>
+        <h3>Hamur Seç *</h3>
         <select>
-          <option name="hamur" value="ince">
-            İnce hamur
-          </option>
-          <option name="hamur" value="orta">
-            Orta hamur
-          </option>
-          <option name="hamur" value="kalın">
-            Kalın hamur
-          </option>
+          {hamurKalınlıgı.map((item, index) => (
+            <option key={index} name="hamur" value={item}>
+              {item}
+            </option>
+          ))}
         </select>
-      </Label>
-      <p>Ek Malzemeler</p>
+        {error.hamur && <p className="errorMessage">{error.hamur}</p>}
+      </div>
+      <h3>Ek Malzemeler</h3>
       <EkMalzemeContainer>
         {ekMalzemeler.map((item, index) => (
-          <Malzeme malzeme={item} key={index} />
+          <Malzeme
+            fiyat={fiyat}
+            setFiyat={setFiyat}
+            malzeme={item}
+            key={index}
+            handleChange={handleChange}
+            isSelected={formData.malzemeler.includes(item)}
+          />
         ))}
       </EkMalzemeContainer>
+      {error.malzemeler && <p className="errorMessage">{error.malzemeler}</p>}
 
-      <p>
+      <div>
         <label>
-          Sipariş Veren Kişinin Adı
-          <input type="text" name="siparis-name" />
+          <h3>Sipariş Veren Kişinin Adı</h3>
+          <input
+            type="text"
+            name="kisininAdı"
+            value={formData.kisininAdı}
+            onChange={handleChange}
+          />
+          {error.kisininAdı && (
+            <p className="errorMessage">{error.kisininAdı}</p>
+          )}
         </label>
         <label>
-          Sipariş Notu
-          <input type="text" name="siparis-notu" />
+          <h3>Sipariş Notu</h3>
+          <input
+            type="text"
+            name="siparisNotu"
+            value={formData.siparisNotu}
+            onChange={handleChange}
+          />
         </label>
-      </p>
+      </div>
       <SiparisButtonContainer>
         <h3>Sipariş Toplamı</h3>
-        <p>Ek Malzemeler</p>
+        <p>Ek Malzeme Seçimleri</p>
+        {formData.malzemeler.length * 5}
         <p>Toplam</p>
+        {pizzaFiyat + formData.malzemeler.length * 5}
+
         <Button disabled={!isValid}>Sipariş Ver</Button>
       </SiparisButtonContainer>
     </Form>

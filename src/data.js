@@ -13,3 +13,16 @@ export const ekMalzemeler = [
     "Ananas",
     "Kabak",
 ]
+export const hamurKalınlıgı = [
+    "---",
+    "Süper İnce",
+    "İnce",
+    "Kalın"
+   
+]
+
+export const boyut=[
+    "Küçük",
+    "Orta",
+    "Büyük"
+]
